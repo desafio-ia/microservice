@@ -2,8 +2,8 @@ import os
 from flask import Flask, request, jsonify, json
 from dotenv import load_dotenv
 from datetime import datetime, timezone
-from inference.image_handler import load_and_preprocess_image
-from inference.predictor import predict_image
+from src.inference.image_handler import load_and_preprocess_image
+from src.inference.predictor import predict_image
 
 load_dotenv()
 
@@ -37,10 +37,10 @@ def model():
 
 @app.route("/model/evaluation", methods=["GET"])
 def evaluation():
-    with open("model/metrics.json") as f:
+    with open("./src/model/metrics.json") as f:
         metrics = json.load(f)
     
-    last_modified_ts = os.path.getmtime("model/metrics.json")
+    last_modified_ts = os.path.getmtime("./src/model/metrics.json")
     evaluation_date = datetime.fromtimestamp(last_modified_ts, tz=timezone.utc).isoformat()
     metrics["model_id"] = os.getenv("NAME_MODEL", "unknown")
     metrics["dataset_name"] = os.getenv("DATASET_NAME_MODEL", "unknown"),

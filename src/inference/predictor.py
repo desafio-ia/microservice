@@ -1,11 +1,14 @@
 import os
 import torch
-from model.neural_model import Neural
+from src.model.neural_model import Neural
 from dotenv import load_dotenv
 
 load_dotenv()
 
 DEVICE = torch.device("cpu")
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "..", "model", "neural_cifar10.pt")
 
 class_names = [
     'avião','carro','passáro','gato','veado',
@@ -14,7 +17,7 @@ class_names = [
 
 model = Neural(num_classes=10)
 model.load_state_dict(
-    torch.load("model/neural_cifar10.pt", map_location=DEVICE)
+    torch.load(MODEL_PATH, map_location=DEVICE)
 )
 model.eval()
 
